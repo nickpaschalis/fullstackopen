@@ -1,0 +1,30 @@
+title Notes website
+
+note left of browser: 
+When the button on the form is clicked,
+the browser will send the user input to the server
+(it will be sent as the body of the POST-request).
+end note
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
+server-->browser: HTTP status code 302 (redirect to /notes)
+
+note right of server:
+The server creates a new note object
+and adds it to an array called notes.
+Now the data.json file contains
+the new note that the user added.
+end note
+
+
+note left of browser:
+The browser loads the Notes page
+end note
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+server-->browser: HTML-code
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server-->browser: main.css
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
+server-->browser: main.js
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+server-->browser: data.json
