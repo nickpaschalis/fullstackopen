@@ -1,0 +1,19 @@
+title New note (SPA)
+
+note left of browser: 
+When the button on the form is clicked, together with the HTTP POST, 
+the browser will send the user input to the server
+(it will be sent as JSON-data containing both the content
+of the note (content) and the timestamp (date)).
+end note
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+server-->browser: HTTP status code 201 (created - the request has been fulfilled)
+
+note right of server:
+JavaScript code (the push() method) is used instead of sending
+the form data in the traditional way (meaning that the server
+won't not ask for a redirect).
+end note
+
+server->browser: HTTP POST ... notes sent as JSON-string
