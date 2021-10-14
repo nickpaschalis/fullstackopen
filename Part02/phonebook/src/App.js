@@ -6,6 +6,7 @@ const App = () => {
   ]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
+  const [filter, setFilter] = useState('');
 
   const addContact = event => {
     event.preventDefault();
@@ -14,13 +15,16 @@ const App = () => {
     } else {
       setPersons(
         persons.concat([
-          { name: newName, number: newNumber, id: persons.length }
+          { name: newName, number: newNumber, id: persons.length + 1 }
         ])
       );
-      console.log(persons);
       setNewName('');
       setNewNumber('');
     }
+  };
+
+  const filterChangeHandler = event => {
+    setFilter(event.target.value);
   };
 
   const nameChangeHandler = event => {
@@ -31,9 +35,18 @@ const App = () => {
     setNewNumber(event.target.value);
   };
 
+  const contactsToShow = persons.filter(person =>
+    person.name.toUpperCase().includes(filter.toUpperCase())
+  );
+
   return (
     <div>
       <h2>Phonebook</h2>
+      <div>
+        filter shown with:{' '}
+        <input value={filter} onChange={filterChangeHandler} />
+      </div>
+      <h2>add a new</h2>
       <form onSubmit={addContact}>
         <div>
           name: <input value={newName} onChange={nameChangeHandler} />
@@ -47,7 +60,7 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <ul>
-        {persons.map(person => (
+        {contactsToShow.map(person => (
           <li key={person.name}>
             {person.name} {person.number}{' '}
           </li>
