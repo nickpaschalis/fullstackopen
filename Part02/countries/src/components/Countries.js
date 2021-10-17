@@ -1,4 +1,5 @@
 import Country from './Country';
+import ShowCountries from './ShowCountries';
 
 const Countries = ({ filter, filteredCountries }) => {
   if (filter === '') {
@@ -8,13 +9,7 @@ const Countries = ({ filter, filteredCountries }) => {
   } else if (filteredCountries.length === 1) {
     return <Country country={filteredCountries[0]} />;
   } else {
-    return (
-      <ul>
-        {filteredCountries.map(country => (
-          <li key={country.name}>{country.name}</li>
-        ))}
-      </ul>
-    );
+    return <ShowCountries filteredCountries={filteredCountries} />;
   }
 };
 

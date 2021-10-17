@@ -2,8 +2,8 @@ const Country = ({ country }) => {
   return (
     <div>
       <h1>{country.name}</h1>
+      <p>population: {country.population.toLocaleString()}</p>
       <p>capital: {country.capital}</p>
-      <p>population: {country.population}</p>
       <h2>languages</h2>
       <ul>
         {country.languages.map(language => (
