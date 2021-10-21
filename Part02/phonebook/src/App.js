@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import contactService from './services/contacts';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
-import Persons from './components/Persons';
+import Person from './components/Person';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -23,7 +23,7 @@ const App = () => {
       alert(`${newName} is already added to phonebook`);
     } else {
       contactService
-        .create({ name: newName, number: newNumber, id: persons.length + 1 })
+        .create({ name: newName, number: newNumber, id: persons[persons.length-1].id + 1 })
         .then(returnedContact => {
           setPersons(persons.concat(returnedContact));
           setNewName('');
@@ -44,10 +44,20 @@ const App = () => {
     setNewNumber(event.target.value);
   };
 
+  const deleteHandler = person => {
+    let toDelete = window.confirm(`Delete ${person.name}?`);
+    if (toDelete) {
+      contactService
+        .remove(person.id)
+        .then(() =>
+          setPersons(persons.filter(p => p.id !== person.id)))
+    } 
+  };
+
   const contactsToShow = persons.filter(person =>
     person.name.toUpperCase().includes(filter.toUpperCase())
   );
-
+ 
   return (
     <div>
       <h2>Phonebook</h2>
@@ -63,7 +73,16 @@ const App = () => {
       />
 
       <h2>Numbers</h2>
-      <Persons contactsToShow={contactsToShow} />
+      <ul>
+        {contactsToShow.map(
+          person => 
+            <Person 
+              key={person.id}
+              person={person}
+              deletePerson={() => deleteHandler(person)}
+            />   
+        )}
+      </ul>
     </div>
   );
 };
