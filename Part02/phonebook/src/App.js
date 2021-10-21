@@ -22,15 +22,16 @@ const App = () => {
     if (persons.filter(person => person.name === newName).length > 0) {
       alert(`${newName} is already added to phonebook`);
     } else {
-      setPersons(
-        persons.concat([
+      axios
+        .post(
+          'http://localhost:3001/persons', 
           { name: newName, number: newNumber, id: persons.length + 1 }
-        ])
-      );
+        )
+        .then(response => setPersons(persons.concat(response.data)));
       setNewName('');
       setNewNumber('');
     }
-  };
+  }
 
   const filterChangeHandler = event => {
     setFilter(event.target.value);
