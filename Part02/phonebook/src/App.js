@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
+import contactService from './services/contacts';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
@@ -12,9 +12,9 @@ const App = () => {
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost:3001/persons').then(response => {
-      setPersons(response.data);
-    });
+    contactService
+      .getAll()
+      .then(initialContacts => setPersons(initialContacts));    
   }, []);
 
   const addContact = event => {
@@ -22,15 +22,14 @@ const App = () => {
     if (persons.filter(person => person.name === newName).length > 0) {
       alert(`${newName} is already added to phonebook`);
     } else {
-      axios
-        .post(
-          'http://localhost:3001/persons', 
-          { name: newName, number: newNumber, id: persons.length + 1 }
-        )
-        .then(response => setPersons(persons.concat(response.data)));
-      setNewName('');
-      setNewNumber('');
-    }
+      contactService
+        .create({ name: newName, number: newNumber, id: persons.length + 1 })
+        .then(returnedContact => {
+          setPersons(persons.concat(returnedContact));
+          setNewName('');
+          setNewNumber('');
+        });
+      }
   }
 
   const filterChangeHandler = event => {
