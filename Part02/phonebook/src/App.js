@@ -12,6 +12,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('');
   const [filter, setFilter] = useState('');
   const [notification, setNotification] = useState('');
+  const [notificationColor, setNotificationColor] = useState('green');
 
   useEffect(() => {
     contactService
@@ -30,7 +31,15 @@ const App = () => {
           .update(contact.id, changedContact)
           .then(returnedContact => {
             setPersons(persons.map(p => p.id !== contact.id ? p : returnedContact ));
-          }) 
+          })
+          .catch(error => {
+            setNotification(`Information of ${newName} has already been removed from server`);
+            setNotificationColor('red');
+            setTimeout(() => {
+              setNotification('')
+              setNotificationColor('green');
+            }, 3000);
+          })
       }
 
     } else {
@@ -75,7 +84,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      {notification && <Notification notification={notification}/>}
+      {notification && <Notification notification={notification} notificationColor={notificationColor} />}
       <Filter filter={filter} filterChangeHandler={filterChangeHandler} />
 
       <h2>add a new</h2>
@@ -101,5 +110,4 @@ const App = () => {
     </div>
   );
 };
-
 export default App;
