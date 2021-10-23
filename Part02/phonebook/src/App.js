@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import contactService from './services/contacts';
 import Filter from './components/Filter';
+import Notification from './components/Notification';
 import PersonForm from './components/PersonForm';
 import Person from './components/Person';
 
@@ -10,6 +11,7 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [filter, setFilter] = useState('');
+  const [notification, setNotification] = useState('');
 
   useEffect(() => {
     contactService
@@ -36,6 +38,8 @@ const App = () => {
         .create({ name: newName, number: newNumber, id: persons[persons.length-1].id + 1 })
         .then(returnedContact => {
           setPersons(persons.concat(returnedContact));
+          setNotification(`Added ${newName}`);
+          setTimeout(() => setNotification(''), 3000);
           setNewName('');
           setNewNumber('');
         });
@@ -71,6 +75,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      {notification && <Notification notification={notification}/>}
       <Filter filter={filter} filterChangeHandler={filterChangeHandler} />
 
       <h2>add a new</h2>
